@@ -3,6 +3,25 @@ import * as vscode from 'vscode';
 export function activate(context: vscode.ExtensionContext) {
 	let terminal: vscode.Terminal | null = null;
 
+	const prefixedCommand = function(command: string) {
+		const prefix = vscode.workspace.getConfiguration('railsTestAssistant').testCommandPrefix;
+
+		if (typeof(prefix) === 'string') {
+			command = `${prefix} ${command}`;
+		}
+
+		return command;
+	};
+
+	const sendTerminalCommand = function(command: string) {
+		if (terminal === null) {
+			terminal = vscode.window.createTerminal(`Rails Test Assistant: Terminal`);
+		}
+
+		terminal.sendText(command);
+		terminal.show();
+	};
+
 	let goToRailsTestDisposable = vscode.commands.registerCommand('rails-test-assistant.goToRailsTest', () => {
 		const currentEditor = vscode.window.activeTextEditor;
 		if(typeof(currentEditor) === 'undefined') { return; }
@@ -64,19 +83,8 @@ export function activate(context: vscode.ExtensionContext) {
 		if (!currentlyViewingTest) { return; }
 
 		const lineNumber = currentEditor.selection.start.line + 1;
-		let command = `rails test ${uri}:${lineNumber}`;
-
-		const prefix = vscode.workspace.getConfiguration('railsTestAssistant').testCommandPrefix;
-		if (typeof(prefix) === 'string') {
-			command = `${prefix} ${command}`;
-		}
-
-		if (terminal === null) {
-			terminal = vscode.window.createTerminal(`Rails Test Assistant: Terminal`);
-		}
-
-		terminal.sendText(command);
-		terminal.show();
+		const command = prefixedCommand(`rails test ${uri}:${lineNumber}`);
+		sendTerminalCommand(command);
 	});
 
 	context.subscriptions.push(executeHighlightedTestDisposable);
@@ -85,19 +93,8 @@ export function activate(context: vscode.ExtensionContext) {
 		const currentEditor = vscode.window.activeTextEditor;
 		if(typeof(currentEditor) === 'undefined') { return; }
 
-		let command = `rails test`;
-
-		const prefix = vscode.workspace.getConfiguration('railsTestAssistant').testCommandPrefix;
-		if (typeof(prefix) === 'string') {
-			command = `${prefix} ${command}`;
-		}
-
-		if (terminal === null) {
-			terminal = vscode.window.createTerminal(`Rails Test Assistant: Terminal`);
-		}
-
-		terminal.sendText(command);
-		terminal.show();
+		const command = prefixedCommand(`rails test`);
+		sendTerminalCommand(command);
 	});
 
 	context.subscriptions.push(runAllTestsDisposable);
@@ -115,19 +112,8 @@ export function activate(context: vscode.ExtensionContext) {
 		const currentlyViewingTest = uri.endsWith('_test.rb');
 		if (!currentlyViewingTest) { return; }
 
-		let command = `rails test ${uri}`;
-
-		const prefix = vscode.workspace.getConfiguration('railsTestAssistant').testCommandPrefix;
-		if (typeof(prefix) === 'string') {
-			command = `${prefix} ${command}`;
-		}
-
-		if (terminal === null) {
-			terminal = vscode.window.createTerminal(`Rails Test Assistant: Terminal`);
-		}
-
-		terminal.sendText(command);
-		terminal.show();
+		const command = prefixedCommand(`rails test ${uri}`);
+		sendTerminalCommand(command);
 	});
 
 	context.subscriptions.push(runTestsInFileDisposable);
