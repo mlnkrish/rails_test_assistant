@@ -12,7 +12,9 @@
 	"main": "./out/extension.js",
 	"activationEvents": [
 		"onCommand:rails-test-assistant.goToRailsTest",
-		"onCommand:rails-test-assistant.runTestAtCursor"
+		"onCommand:rails-test-assistant.runTestAtCursor",
+		"onCommand:rails-test-assistant.runTestsInFile",
+		"onCommand:rails-test-assistant.runAllTests"
 	],
 	"contributes": {
 		"commands": [
@@ -23,6 +25,14 @@
 			{
 				"command": "rails-test-assistant.runTestAtCursor",
 				"title": "Rails Test Assistant: Run test at cursor"
+			},
+			{
+				"command": "rails-test-assistant.runTestsInFile",
+				"title": "Rails Test Assistant: Run the tests in the current file"
+			},
+			{
+				"command": "rails-test-assistant.runAllTests",
+				"title": "Rails Test Assistant: Run entire suite"
 			}
 		],
 		"keybindings": [
