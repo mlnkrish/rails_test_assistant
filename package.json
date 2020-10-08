@@ -1,13 +1,13 @@
 {
 	"name": "rails-test-assistant",
-	"displayName": "rails-test-assistant",
-	"description": "",
+	"displayName": "Rails Test Assistant",
+	"description": "Navigate to tests and execute them without leaving VSCode.",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.49.0"
 	},
 	"categories": [
-		"Other"
+		"Testing"
 	],
 	"main": "./out/extension.js",
 	"activationEvents": [
