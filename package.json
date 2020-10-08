@@ -11,13 +11,18 @@
 	],
 	"main": "./out/extension.js",
 	"activationEvents": [
-    "onCommand:rails-test-assistant.goToRailsTest"
+		"onCommand:rails-test-assistant.goToRailsTest",
+		"onCommand:rails-test-assistant.runTestAtCursor"
 	],
 	"contributes": {
 		"commands": [
 			{
 				"command": "rails-test-assistant.goToRailsTest",
-				"title": "Rails Test Assistant: Swap Between Test And File"
+				"title": "Rails Test Assistant: Swap between test and file"
+			},
+			{
+				"command": "rails-test-assistant.runTestAtCursor",
+				"title": "Rails Test Assistant: Run test at cursor"
 			}
 		],
 		"keybindings": [
@@ -26,7 +31,16 @@
 					"key": "ctrl+alt+t",
 					"mac": "shift+cmd+t"
 			}
-	]
+		],
+		"configuration": {
+      "title": "Rails Test Assistant",
+      "properties": {
+        "railsTestAssistant.testCommandPrefix": {
+          "type": "string",
+          "description": "Anything that goes before 'rails test' to make things work in your environment."
+        }
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
