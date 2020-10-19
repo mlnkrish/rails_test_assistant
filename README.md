@@ -6,6 +6,7 @@ Easily navigate to Rails tests and execute them without leaving VS Code.
 
 * Swap between a class and its test.
 * Execute the test at the current cursor.
+* Support for both `*_test.rb` and `*_spec.rb`.
 
 ## Extension Settings
 
