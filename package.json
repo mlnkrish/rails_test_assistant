@@ -18,7 +18,8 @@
 		"onCommand:rails-test-assistant.goToRailsTest",
 		"onCommand:rails-test-assistant.runTestAtCursor",
 		"onCommand:rails-test-assistant.runTestsInFile",
-		"onCommand:rails-test-assistant.runAllTests"
+		"onCommand:rails-test-assistant.runAllTests",
+		"onCommand:rails-test-assistant.runAllTestsWithRspec"
 	],
 	"contributes": {
 		"commands": [
@@ -37,6 +38,10 @@
 			{
 				"command": "rails-test-assistant.runAllTests",
 				"title": "Rails Test Assistant: Run entire suite"
+			},
+			{
+				"command": "rails-test-assistant.runAllTestsWithRspec",
+				"title": "Rails Test Assistant: Run entire suite with RSpec"
 			}
 		],
 		"keybindings": [
