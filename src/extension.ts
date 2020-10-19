@@ -31,13 +31,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 		if (resultSet.length === 1) {
 			const firstResult = resultSet[0];
-			vscode.workspace.openTextDocument(firstResult).then(doc => {
+			const fullPath = resolver.fullPath(firstResult);
+			vscode.workspace.openTextDocument(fullPath).then(doc => {
 				vscode.window.showTextDocument(doc);
 			});
 		} else if (resultSet.length > 1) {
 			vscode.window.showQuickPick(resultSet).then(selection => {
 				if (typeof(selection) === 'string') {
-					vscode.workspace.openTextDocument(selection).then(doc => {
+					const fullPath = resolver.fullPath(selection);
+					vscode.workspace.openTextDocument(fullPath).then(doc => {
 						vscode.window.showTextDocument(doc);
 					});
 				}
