@@ -24,3 +24,17 @@ suite('resolver.resolve', () => {
 		assert(results.includes(`spec/models/user_spec.rb`));
 	});
 });
+
+suite('resolver.isTest', () => {
+	test('_test.rb files are tests', () => {
+		assert(resolver.isTest('user_test.rb'));
+	});
+
+	test('_spec.rb files are tests', () => {
+		assert(resolver.isTest('user_spec.rb'));
+	});
+
+	test('other files are not tests', () => {
+		assert(!resolver.isTest('user.rb'));
+	});
+});

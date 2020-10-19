@@ -50,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
 			uri = uri.replace(`${rootPath}/`, '');
 		}
 
-		const currentlyViewingTest = uri.endsWith('_test.rb');
+		const currentlyViewingTest = resolver.isTest(uri);
 		if (!currentlyViewingTest) { return; }
 
 		const lineNumber = currentEditor.selection.start.line + 1;
@@ -83,7 +83,7 @@ export function activate(context: vscode.ExtensionContext) {
 			uri = uri.replace(`${rootPath}/`, '');
 		}
 
-		const currentlyViewingTest = uri.endsWith('_test.rb');
+		const currentlyViewingTest = resolver.isTest(uri);
 		if (!currentlyViewingTest) { return; }
 
 		let testCommand = command.forFile(uri);

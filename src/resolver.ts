@@ -45,3 +45,7 @@ export async function resolve(path: string) {
 
   return results.map(r => relativePath(r.path));
 }
+
+export function isTest(path: string) {
+  return path.endsWith('_test.rb') || path.endsWith('_spec.rb');
+}
