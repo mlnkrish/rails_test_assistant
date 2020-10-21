@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import * as command from '../../command';
+import * as vscode from 'vscode';
 
 suite('commands.forFile', () => {
   test('minitest', () => {
@@ -12,7 +13,16 @@ suite('commands.forFile', () => {
 });
 
 suite('commands.withEnvPrefix', () => {
-  test('with docker prefix', () => {
+  test('with no prefix', async () => {
+    await vscode.workspace.getConfiguration('railsTestAssistant').update('testCommandPrefix', '');
+    assert.strictEqual(
+      'rails test user_test.rb',
+      command.withEnvPrefix('rails test user_test.rb')
+    );
+  });
+
+  test('with docker prefix', async () => {
+    await vscode.workspace.getConfiguration('railsTestAssistant').update('testCommandPrefix', 'docker-compose run --rm web');
     assert.strictEqual(
       'docker-compose run --rm web rails test user_test.rb',
       command.withEnvPrefix('rails test user_test.rb')
