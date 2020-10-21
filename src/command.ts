@@ -13,7 +13,7 @@ export function forFile(path: string) {
 export function withEnvPrefix(command: string) {
   const prefix = vscode.workspace.getConfiguration('railsTestAssistant').testCommandPrefix;
 
-  if (typeof(prefix) === 'string') {
+  if (typeof(prefix) === 'string' && prefix.trim() !== '') {
     command = `${prefix} ${command}`;
   }
 
