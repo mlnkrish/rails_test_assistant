@@ -1,12 +1,12 @@
 # Rails Test Assistant
 
-Easily navigate to Rails tests and execute them without leaving VS Code.
+![A screenshot of the extension in action](rta-sample.png)
 
 ## Features
 
-* Swap between a class and its test.
-* Execute the test at the current cursor.
-* Support for both `*_test.rb` and `*_spec.rb`.
+* **Easy navigation** between a class and its test.
+* Execute the current test, the current file, or all tests in the project.
+* Works with Test::Unit, MiniTest and RSpec.
 
 ## Extension Settings
 
