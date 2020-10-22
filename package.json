@@ -37,11 +37,11 @@
 			},
 			{
 				"command": "rails-test-assistant.runAllTests",
-				"title": "Rails Test Assistant: Run entire suite"
+				"title": "Rails Test Assistant: Run entire suite with 'rails test'"
 			},
 			{
 				"command": "rails-test-assistant.runAllTestsWithRspec",
-				"title": "Rails Test Assistant: Run entire suite with RSpec"
+				"title": "Rails Test Assistant: Run entire suite with 'rspec'"
 			}
 		],
 		"keybindings": [
