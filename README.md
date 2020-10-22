@@ -1,6 +1,6 @@
 # Rails Test Assistant
 
-![A screenshot of the extension in action](rta-sample.png)
+![A screenshot of the extension in action](https://raw.githubusercontent.com/jsrn/rails_test_assistant/main/rta-sample.png)
 
 ## Features
 
