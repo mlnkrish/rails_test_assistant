@@ -3,7 +3,7 @@
 	"displayName": "Rails Test Assistant",
 	"description": "Navigate to tests and execute them without leaving VSCode.",
 	"repository": "https://github.com/jsrn/rails_test_assistant",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"publisher": "jsrn",
 	"licence": "MIT",
 	"icon": "icon.png",
