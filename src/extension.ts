@@ -64,8 +64,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(executeHighlightedTestDisposable);
 
 	let runAllTestsDisposable = vscode.commands.registerCommand('rails-test-assistant.runAllTests', () => {
-		const currentEditor = vscode.window.activeTextEditor;
-		if(typeof(currentEditor) === 'undefined') { return; }
+		const currentWorkspace = vscode.workspace.workspaceFolders;
+		if(typeof(currentWorkspace) === 'undefined') { return; }
 
 		const testCommand = command.withEnvPrefix('rails test');
 		sendTerminalCommand(testCommand);
@@ -74,8 +74,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(runAllTestsDisposable);
 
 	let runAllTestsWithRspecDisposable = vscode.commands.registerCommand('rails-test-assistant.runAllTestsWithRspec', () => {
-		const currentEditor = vscode.window.activeTextEditor;
-		if(typeof(currentEditor) === 'undefined') { return; }
+		const currentWorkspace = vscode.workspace.workspaceFolders;
+		if(typeof(currentWorkspace) === 'undefined') { return; }
 
 		const testCommand = command.withEnvPrefix('rspec');
 		sendTerminalCommand(testCommand);
