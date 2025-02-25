@@ -3,12 +3,12 @@
 	"displayName": "Rails Test Assistant",
 	"description": "Navigate to tests and execute them without leaving VSCode.",
 	"repository": "https://github.com/jsrn/rails_test_assistant",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"publisher": "jsrn",
 	"licence": "MIT",
 	"icon": "icon.png",
 	"engines": {
-		"vscode": "^1.49.0"
+		"vscode": "^1.57.0"
 	},
 	"categories": [
 		"Other"
@@ -42,22 +42,26 @@
 			{
 				"command": "rails-test-assistant.runAllTestsWithRspec",
 				"title": "Rails Test Assistant: Run entire suite with 'rspec'"
+			},
+			{
+				"command": "rails-test-assistant.listAllSpecsInFile",
+				"title": "Rails Test Assistant: List all specs in file"
 			}
 		],
 		"keybindings": [
 			{
-					"command": "rails-test-assistant.goToRailsTest",
-					"key": "ctrl+alt+t",
-					"mac": "shift+cmd+t"
+				"command": "rails-test-assistant.goToRailsTest",
+				"key": "ctrl+alt+t",
+				"mac": "shift+cmd+t"
 			}
 		],
 		"configuration": {
-      "title": "Rails Test Assistant",
-      "properties": {
-        "railsTestAssistant.testCommandPrefix": {
-          "type": "string",
-          "description": "Anything that goes before 'rails test' to make things work in your environment."
-        }
+			"title": "Rails Test Assistant",
+			"properties": {
+				"railsTestAssistant.testCommandPrefix": {
+					"type": "string",
+					"description": "Anything that goes before 'rails test' to make things work in your environment."
+				}
 			}
 		}
 	},
@@ -67,18 +71,21 @@
 		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"deploy:local": "rm -rf rails-test-assistant-0.2.0.vsix && npm run vscode:prepublish && vsce package && cursor --install-extension rails-test-assistant-0.2.0.vsix --force"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.49.0",
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.0",
 		"@types/node": "^12.11.7",
-		"eslint": "^7.9.0",
+		"@types/vscode": "^1.57.0",
 		"@typescript-eslint/eslint-plugin": "^4.1.1",
 		"@typescript-eslint/parser": "^4.1.1",
+		"@vscode/test-cli": "^0.0.10",
+		"@vscode/test-electron": "^2.4.1",
+		"eslint": "^7.9.0",
 		"glob": "^7.1.6",
-		"mocha": "^8.1.3",
+		"mocha": "^11.1.0",
 		"typescript": "^4.0.2",
 		"vscode-test": "^1.4.0"
 	}
