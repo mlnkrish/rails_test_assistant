@@ -10,6 +10,12 @@ export function activate(context: vscode.ExtensionContext) {
 			terminal = vscode.window.createTerminal(`Rails Test Assistant: Terminal`);
 		}
 
+		// Save the current document before running the command
+		const activeEditor = vscode.window.activeTextEditor;
+		if (activeEditor) {
+			activeEditor.document.save();
+		}
+
 		terminal.sendText(command);
 		// Show the terminal without focusing on it (preserves focus on editor)
 		terminal.show(true);
