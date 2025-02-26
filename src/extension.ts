@@ -53,11 +53,98 @@ export function activate(context: vscode.ExtensionContext) {
 		const currentlyViewingTest = resolver.isTest(uri);
 		if (!currentlyViewingTest) { return; }
 
-		const lineNumber = currentEditor.selection.start.line + 1;
+		const cursorLineNumber = currentEditor.selection.start.line + 1;
+		
+		// Check if the cursor is within a describe block
+		const document = currentEditor.document;
+		const text = document.getText();
+		const lines = text.split('\n');
+		
+		// Check if the current line is followed by an "it" without encountering an "end"
+		let followedByIt = false;
+		
+		// Look at lines after the cursor position
+		for (let i = cursorLineNumber; i < lines.length; i++) {
+			const line = lines[i];
+			
+			// Check for "it" blocks
+			if (line.match(/^\s*it\b/)) {
+				followedByIt = true;
+				break;
+			}
+			
+			// Check for end statements
+			if (line.match(/\bend\b/)) {
+				break;
+			}
+		}
+		
+		// Search backwards for the appropriate line based on the condition
+		let testLineNumber = cursorLineNumber;
+		let foundPreviousDescribe = false;
+		let previousDescribeLine = 0;
+		let previousItLine = 0;
+		
+		for (let i = cursorLineNumber - 1; i >= 0; i--) {
+			const line = lines[i];
+			
+			// Check for "describe" or "context" lines
+			if (line.match(/^\s*(describe|RSpec\.describe|context)\b/) && !foundPreviousDescribe) {
+				previousDescribeLine = i + 1; // +1 because line numbers are 1-indexed
+				foundPreviousDescribe = true;
+				
+				// If we're looking for a describe and already found it, we can stop
+				if (followedByIt) {
+					break;
+				}
+			}
+			
+			// Check for "it" lines
+			if (line.match(/^\s*it\b/) && previousItLine === 0) {
+				previousItLine = i + 1; // +1 because line numbers are 1-indexed
+				
+				// If we're looking for an "it" and already found it, we can stop
+				if (!followedByIt) {
+					break;
+				}
+			}
+		}
+		
+		// Determine which line number to use
+		if (followedByIt && foundPreviousDescribe) {
+			testLineNumber = previousDescribeLine;
+		} else if (previousItLine > 0) {
+			testLineNumber = previousItLine;
+		} else if (foundPreviousDescribe) {
+			testLineNumber = previousDescribeLine;
+		}
+		
+		// Check if there's a describe block after the current line without an 'end' in between
+		let shouldIgnoreLineNumber = true;
+		
+		// Look at lines after the cursor position
+		for (let i = cursorLineNumber; i < lines.length; i++) {
+			const line = lines[i];
+			
+			// Check for describe/context blocks
+			if (line.match(/(?:^|\s+)(?:(?:RSpec\.)?describe|context)\s+['"](.+?)['"]/)) {
+				break;
+			}
+			
+			// Check for end statements
+			if (line.match(/\bend\b/)) {
+				shouldIgnoreLineNumber = false;
+				break;
+			}
+		}
 
 		let testCommand = command.forFile(uri);
 		testCommand = command.withEnvPrefix(testCommand);
-		testCommand = `${testCommand}:${lineNumber}`;
+		
+		if (!shouldIgnoreLineNumber) {
+			testCommand = `${testCommand}:${testLineNumber}`;
+		}
+		
 		sendTerminalCommand(testCommand);
 	});
 
