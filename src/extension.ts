@@ -5,12 +5,22 @@ import * as command from './command';
 export function activate(context: vscode.ExtensionContext) {
 	let terminal: vscode.Terminal | null = null;
 
-	const sendTerminalCommand = function(command: string) {
+	const sendTerminalCommand = async function(command: string) {
 		if (terminal === null) {
 			terminal = vscode.window.createTerminal(`Rails Test Assistant: Terminal`);
 		}
 
+		// Save the current document before running the command
+		const activeEditor = vscode.window.activeTextEditor;
+		if (activeEditor) {
+			await activeEditor.document.save();
+		}
+
+		// Clear the terminal before running the command
+		terminal.sendText('clear');
+		
 		terminal.sendText(command);
+
 		// Show the terminal without focusing on it (preserves focus on editor)
 		terminal.show(true);
 	};
@@ -41,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(goToRailsTestDisposable);
 
-	let executeHighlightedTestDisposable = vscode.commands.registerCommand('rails-test-assistant.runTestAtCursor', () => {
+	let executeHighlightedTestDisposable = vscode.commands.registerCommand('rails-test-assistant.runTestAtCursor', async () => {
 		const currentEditor = vscode.window.activeTextEditor;
 		if(typeof(currentEditor) === 'undefined') { return; }
 
@@ -146,32 +156,32 @@ export function activate(context: vscode.ExtensionContext) {
 			testCommand = `${testCommand}:${testLineNumber}`;
 		}
 		
-		sendTerminalCommand(testCommand);
+		await sendTerminalCommand(testCommand);
 	});
 
 	context.subscriptions.push(executeHighlightedTestDisposable);
 
-	let runAllTestsDisposable = vscode.commands.registerCommand('rails-test-assistant.runAllTests', () => {
+	let runAllTestsDisposable = vscode.commands.registerCommand('rails-test-assistant.runAllTests', async () => {
 		const currentWorkspace = vscode.workspace.workspaceFolders;
 		if(typeof(currentWorkspace) === 'undefined') { return; }
 
 		const testCommand = command.withEnvPrefix('rails test');
-		sendTerminalCommand(testCommand);
+		await sendTerminalCommand(testCommand);
 	});
 
 	context.subscriptions.push(runAllTestsDisposable);
 
-	let runAllTestsWithRspecDisposable = vscode.commands.registerCommand('rails-test-assistant.runAllTestsWithRspec', () => {
+	let runAllTestsWithRspecDisposable = vscode.commands.registerCommand('rails-test-assistant.runAllTestsWithRspec', async () => {
 		const currentWorkspace = vscode.workspace.workspaceFolders;
 		if(typeof(currentWorkspace) === 'undefined') { return; }
 
 		const testCommand = command.withEnvPrefix('rspec');
-		sendTerminalCommand(testCommand);
+		await sendTerminalCommand(testCommand);
 	});
 
 	context.subscriptions.push(runAllTestsWithRspecDisposable);
 
-	let runTestsInFileDisposable = vscode.commands.registerCommand('rails-test-assistant.runTestsInFile', () => {
+	let runTestsInFileDisposable = vscode.commands.registerCommand('rails-test-assistant.runTestsInFile', async () => {
 		const currentEditor = vscode.window.activeTextEditor;
 		if(typeof(currentEditor) === 'undefined') { return; }
 
@@ -186,7 +196,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		let testCommand = command.forFile(uri);
 		testCommand = command.withEnvPrefix(testCommand);
-		sendTerminalCommand(testCommand);
+		await sendTerminalCommand(testCommand);
 	});
 
 	let listAllSpecsInFileDisposable = vscode.commands.registerCommand('rails-test-assistant.listAllSpecsInFile', () => {
