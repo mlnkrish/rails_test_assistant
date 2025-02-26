@@ -11,7 +11,8 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		terminal.sendText(command);
-		terminal.show();
+		// Show the terminal without focusing on it (preserves focus on editor)
+		terminal.show(true);
 	};
 
 	let goToRailsTestDisposable = vscode.commands.registerCommand('rails-test-assistant.goToRailsTest', async () => {
